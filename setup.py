@@ -6,10 +6,16 @@ import pandas as pd
 from dash.dependencies import Input, Output, State
 from plotly.graph_objs import Bar, Layout, Scatter
 #from unidecode import unidecode
+from flask import Flask, json
 from datetime import datetime
 
-app = dash.Dash(__name__)
-server = app.server
+#app = dash.Dash(__name__)
+#server = app.server
+
+app_name = 'Dash FEUD'
+server = Flask(app_name)
+server.secret_key = os.environ.get('SECRET_KEY', 'default-secret-key')
+app = Dash(name=app_name, server=server)
 
 df_contract = pd.read_csv("./informe-contratos-agosto.csv", encoding = "latin-1", sep=";")
 df_group_contract_type = df_contract.groupby("CLASE CONTRATO").count()["VIGENCIA"]
